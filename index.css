@@ -1,0 +1,40 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#app {
+    flex: 1 0 auto;
+}
+
+.flex-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-list-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: .5rem 1rem;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+    margin: .125rem;
+}
+.navbar.bg-dark{
+    background-color: #1d2124 !important;
+}
+form{
+    position: relative;
+}
+form .list-group{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 4px);
+}
+form .list-group .list-group-item{
+    padding: .5rem 1rem;
+}

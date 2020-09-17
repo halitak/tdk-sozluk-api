@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">    <link rel="stylesheet" href="index.css">
+    <title>Sözlük</title>
+</head>
+
+<body>
+    <div id="app" v-bind:class="state_dark_mode ? 'bg-dark text-light' : ''">
+        <nav class="navbar" v-bind:class="state_dark_mode ? 'navbar-dark bg-dark' : 'navbar-light bg-light'">
+            <a class="navbar-brand" v-bind:href="url_home">/index.html</a>
+            <button class="btn btn-outline-primary ml-auto" v-on:click="dark_mode">Dark Mode<span></span></button>
+        </nav>
+
+        <div class="container pb-3 pt-3">
+            <form v-on:submit="get_data">
+                <div class="form-group">
+                    <label for="word" v-bind:title="message_input">Kelime</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control border-primary"
+                            v-bind:class="state_dark_mode ? 'bg-dark text-light' : ''" name="word" id="word"
+                            v-model="word_input" v-on:keyup="autocomplete" v-on:blur="hide_autocomplete"
+                            placeholder="Kelime" aria-label="Kelime" autocomplete="off">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="submit">Gönder</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-group" v-if="state_autocomplete">
+                    <a v-bind:href="url+'?word='+word" class="list-group-item list-group-item-action"
+                        v-bind:class="state_dark_mode ? 'bg-dark text-light' : ''"
+                        v-for="word in data_autocomplete">{{word}}</a>
+                </div>
+            </form>
+            <div class="table-responsive">
+
+                <table class="table table-striped mt-3" v-if="state_data"
+                    v-bind:class="state_dark_mode ? 'table-dark' : ''">
+                    <caption style="caption-side: top;">
+                        <div>
+                            {{data.word}}<span v-if="data.language"> - </span>{{data.language}}
+                            <button class="btn btn-outline-primary btn-sm ml-1" v-bind:title="data.voice"
+                                v-on:click="play" v-if="data.voice">Ses Çal
+                                <audio v-bind:src="url_voice_file + data.voice"></audio>
+                            </button>
+                        </div>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Özellik</th>
+                            <th scope="col">Anlam</th>
+                            <th scope="col">Örnek</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item,index in data.means">
+                            <td scope="row">{{index+1}}</td>
+                            <td>{{item.type.toString()}}</td>
+                            <td>{{item.mean}}</td>
+                            <td v-if="item.samples.length>0">
+                                <div v-for="sample in item.samples"><i>{{sample.sample}}</i><span v-if="sample.author">
+                                        -
+                                    </span>{{sample.author}}</div>
+                            </td>
+                            <td v-else></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-3" v-if="data.proverb">
+                <h3>Atasözleri</h3>
+                <div class="flex-list">
+                    <a class="flex-list-item" v-for="word in data.proverb" v-bind:title="url+'?word='+word"
+                        v-bind:href="url+'?word='+word">{{word}}</a>
+                </div>
+            </div>
+            <div class="mt-3" v-if="data.words">
+                <h3>Birleşik Kelimeler</h3>
+                <div class="flex-list">
+                    <a class="flex-list-item" v-for="word in data.words" v-bind:title="url+'?word='+word"
+                        v-bind:href="url+'?word='+word">{{word}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>    <script src="index.js"></script>
+</body>
+
+</html>
